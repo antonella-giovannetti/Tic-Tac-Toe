@@ -9,7 +9,7 @@ count = 0
 
 # Remet à zéro les boutons
 def disable_all_buttons():
-    b1.config(state=DISABLED)
+    b1.config(state=DISABLED) # désactive le bouton b1 en le mettant dans un état désactivé, l'utilisateur ne peut plus cliquer sur le bouton qui ne répondra plus aux événements de souris
     b2.config(state=DISABLED)
     b3.config(state=DISABLED)
     b4.config(state=DISABLED)
@@ -135,7 +135,10 @@ def checkifwon():
         winner = True
         messagebox.showinfo("Tic tac toe", "O Wins !!")
         disable_all_buttons()
-    
+    if count == 9 and winner == False:
+        messagebox.showinfo("Tic tac toe", "No one Wins")
+        disable_all_buttons()
+
 # Boutons au click 
 def b_click(b):
     global clicked, count # informe que les variables à l'exterieur sont les mêmes que définie à l'interieur de la fonction
@@ -152,6 +155,8 @@ def b_click(b):
     else:
         messagebox.showerror("Tic tac toe", "Hey! that box has already been selected \n  Pick another box")
     
+
+# Reinitialise le jeu de zéro 
 def reset(): 
     global b1, b2, b3, b4, b5, b6, b7, b8, b9
     global clicked, count
@@ -182,12 +187,10 @@ def reset():
     b9.grid(row=2, column=2)
 
 # Menu
-my_menu = Menu(window)
-window.config(menu=my_menu)
+my_menu = Menu(window) # Création de l'objet de menu 
+window.config(menu=my_menu) # Affiche le menu crée precédement en utilisant la méthode config et en passant le param menu qui prend l'objet de menu crée
 
-options_menu = Menu(my_menu, tearoff=False)
-my_menu.add_cascade(label="Options", menu=options_menu)
-options_menu.add_command(label="Reset Game", command=reset)
+my_menu.add_command(label="Reset Game", command=reset)  # Ajoute une option au menu principal "Reset game" et la fonction reset 
 
 reset()
 
