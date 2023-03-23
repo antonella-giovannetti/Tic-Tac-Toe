@@ -13,31 +13,11 @@ buttons = []
 one = None
 two = None
 
-# Désactive les boutons
-def disable_all_buttons():
-    for button in buttons:
-        button.config(state=DISABLED) # désactive le bouton en le mettant dans un état désactivé, l'utilisateur ne peut plus cliquer sur le bouton qui ne répondra plus aux événements de souris
+# ------------- 1 JOUEUR  ------------- 
 
-# Verifie si O ou X gagne
-def checkifwon():
-    global winner
-    for a, b, c in [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7),(2, 5, 8),(0, 4, 8), (2, 4, 6)]: 
-        if buttons[a]["text"] == buttons[b]["text"] == buttons[c]["text"] != "":
-            for button in (buttons[a], buttons[b], buttons[c]):
-                button.config(bg="blue")
-            winner = True
-            messagebox.showinfo("Jeu du morpion", f"Bravo, {buttons[a]['text']} a gagné !")
-            disable_all_buttons()
+# --- NIVEAU 1 AVEC RANDOM ---
 
-# Reinitialise le jeu de zéro 
-def reset(): 
-    global buttons, clicked, count, winner
-    clicked = True
-    count = 0
-    winner = False
-    for button in buttons:
-        button.config(text="", bg="SystemButtonFace", state=NORMAL)
-
+# Remplissage des cases avec O pour le joueur utilisateur et X en random
 def one_player_level1_buttons(i):
     global buttons, count, winner
     if not winner:
@@ -60,6 +40,7 @@ def one_player_level1_buttons(i):
             messagebox.showinfo("Jeu du morpion", "Match nul")
             disable_all_buttons()
 
+# Affichage de la grille de jeu pour le niveau 1
 def one_player_level1():
     global buttons
     destroy_widget()
@@ -69,9 +50,12 @@ def one_player_level1():
         button.grid(row=i // 3, column=i % 3, sticky=NSEW) # sticky NSEW fait en sorte que le bouton occupe tout l'espace disponible dans sa cellule
         buttons.append(button)
 
+# --- NIVEAU 2 AVEC MINIMAX ---
+
 def one_player_level2_buttons(i):
     pass
 
+# Affichage de la grille de jeu pour le niveau 2 
 def one_player_level2():
     global buttons
     destroy_widget()
@@ -81,6 +65,7 @@ def one_player_level2():
         button.grid(row=i // 3, column=i % 3, sticky=NSEW) # sticky NSEW fait en sorte que le bouton occupe tout l'espace disponible dans sa cellule
         buttons.append(button)
 
+# Affichade des boutons pour choisir le niveau
 def one_player():
     global one, two
     destroy_widget()
@@ -91,6 +76,9 @@ def one_player():
     level1.pack()
     level2.pack()
 
+# ------------- 2 JOUEURS  ------------- 
+
+# Remplissage des cases avec O et X
 def two_players_buttons(i):
     global clicked, count, winner 
     if buttons[i]["text"] == "" and clicked == True:
@@ -107,6 +95,7 @@ def two_players_buttons(i):
         messagebox.showinfo("Jeu du morpion", "Match nul")
         disable_all_buttons()
 
+# Affichage de la grille pour les deux joueurs
 def two_players():
     global one, two
     destroy_widget()
@@ -116,11 +105,39 @@ def two_players():
         button.grid(row=i // 3, column=i % 3, sticky=NSEW) # sticky NSEW fait en sorte que le bouton occupe tout l'espace disponible dans sa cellule
         buttons.append(button)
 
+# ------------- FONCTIONS DU JEU  ------------- 
+
+# Verifie si O ou X gagne
+def checkifwon():
+    global winner
+    for a, b, c in [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7),(2, 5, 8),(0, 4, 8), (2, 4, 6)]: 
+        if buttons[a]["text"] == buttons[b]["text"] == buttons[c]["text"] != "":
+            for button in (buttons[a], buttons[b], buttons[c]):
+                button.config(bg="blue")
+            winner = True
+            messagebox.showinfo("Jeu du morpion", f"Bravo, {buttons[a]['text']} a gagné !")
+            disable_all_buttons()
+
+# Reinitialise le jeu de zéro 
+def reset(): 
+    global buttons, clicked, count, winner
+    clicked = True
+    count = 0
+    winner = False
+    for button in buttons:
+        button.config(text="", bg="SystemButtonFace", state=NORMAL)
+
+# Menu dans l'affichage du morpion
 def menu_on_game():
     my_menu = Menu(window) # Création de l'objet de menu 
     window.config(menu=my_menu) # Affiche le menu crée precédement en utilisant la méthode config et en passant le param menu qui prend l'objet de menu crée
     my_menu.add_command(label="Menu", command=start_game)  # Ajoute une option au menu principal "Reset game" et la fonction reset 
     my_menu.add_command(label="Relancer le jeu", command=reset)  # Ajoute une option au menu principal "Reset game" et la fonction reset 
+
+# Désactive les boutons
+def disable_all_buttons():
+    for button in buttons:
+        button.config(state=DISABLED) # désactive le bouton en le mettant dans un état désactivé, l'utilisateur ne peut plus cliquer sur le bouton qui ne répondra plus aux événements de souris
 
 # Démarre le jeu
 def start_game():
@@ -131,10 +148,15 @@ def start_game():
     one.pack()
     two.pack()
 
+# Désactive les boutons
+def disable_all_buttons():
+    for button in buttons:
+        button.config(state=DISABLED) # désactive le bouton en le mettant dans un état désactivé, l'utilisateur ne peut plus cliquer sur le bouton qui ne répondra plus aux événements de souris
+
+# Détruit les widgets
 def destroy_widget(): 
     for widget in window.winfo_children():
         widget.destroy()
 
 start_game()
-
 window.mainloop()
