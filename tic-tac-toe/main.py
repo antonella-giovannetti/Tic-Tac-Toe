@@ -165,5 +165,5 @@ def destroy_widget():
     for widget in window.winfo_children():
         widget.destroy()
 
-start_game()
+start_game() 
 window.mainloop()
